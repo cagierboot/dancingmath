@@ -5,6 +5,11 @@ import numpy as np
 class ExtendedShapeTransformationWithEquations(Scene):
     def construct(self):
 
+         # Create a white grid
+        grid = NumberPlane(axis_config={"color": WHITE})
+        self.add(grid)  
+         
+
         # Create various shapes and their associated equations
         shapes_and_equations = [
             (Square(), Tex("$A = s^2$").scale(0.5)),
@@ -16,6 +21,7 @@ class ExtendedShapeTransformationWithEquations(Scene):
             (RegularPolygon(n=6), Tex("$A = \\frac{3\\sqrt{3}}{2}a^2$").scale(0.5)),
             (RegularPolygon(n=7), Tex("$A \\approx 3.63a^2$").scale(0.5)), 
             (RegularPolygon(n=8), Tex("$A = 2a^2(1+\\sqrt{2})$").scale(0.5)),
+
             # Cardioid
             (ParametricFunction(
                 lambda t: np.array([
