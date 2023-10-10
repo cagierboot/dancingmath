@@ -1,24 +1,39 @@
 import librosa
-import numpy as np
 import datetime
+import numpy as np
 
 # Load the audio file
-audio_file = 'Idylls of Pegasus - Richard Meyer (ThatCelloGuy).mp4'
+audio_file = '4th Dimension.mp4'
 y, sr = librosa.load(audio_file, sr=None)
 
-# Detect onsets
-onsets = librosa.onset.onset_detect(y=y, sr=sr)
-onset_frames = librosa.onset.onset_detect(y=y, sr=sr, units='frames')
+# Detect beat
+tempo, beats = librosa.beat.beat_track(y=y, sr=sr)
 
-# Collect 1 for onsets and 0 for non-onsets by checking the presence of each frame in the onsets array
-onset_values = [1 if frame in onset_frames else 0 for frame in range(len(y)//512)]
+# Calculate the total length of the audio in seconds
+total_length_seconds = len(y) / sr
+
+# Calculate the total number of .25 second chunks in the audio
+total_chunks = int(total_length_seconds / 0.25)
+
+# Initialize an array to hold the beat data
+beat_array = np.zeros(total_chunks, dtype=int)
+
+# Convert beat frames to the time
+beat_times = librosa.frames_to_time(beats, sr=sr)
+
+# Convert beat times to .25 second chunks
+beat_chunks = (beat_times / 0.25).astype(int)
+
+# Set the value of the chunks containing beats to 1
+beat_array[beat_chunks] = 1
 
 # Get the current timestamp
 timestamp = datetime.datetime.now().strftime("%Y%m%d%H%M%S")
 
 # Open a text file in write mode with the timestamp in the filename
-filename = f'onsets_{timestamp}.txt'
+filename = f'beats_{timestamp}.txt'
 with open(filename, 'w') as f:
-    f.write(str(onset_values))  # Write array to file
+    beat_str = ''.join(map(str, beat_array.tolist()))  # Convert array to string
+    f.write(beat_str)  # Write string to file
 
 print(f"Data written to {filename}")

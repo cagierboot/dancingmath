@@ -1,6 +1,6 @@
 from pytube import YouTube
 
-url = 'https://youtu.be/S66IfQky21I?si=5y0WfPkyAD5jUGOo'
+url = 'https://youtu.be/6Hj5tucYv1Q?si=MRrv36FHz8EdTimz'
 yt = YouTube(url)
 ys = yt.streams.filter(only_audio=True).first()
 
