@@ -1,11 +1,9 @@
 from manim import *
 import random
+import numpy as np
 
 class ExtendedShapeTransformationWithEquations(Scene):
     def construct(self):
-
-        # Create a line
-        line = Line(start=[-1, 0, 0], end=[1, 0, 0])
 
         # Create various shapes and their associated equations
         shapes_and_equations = [
@@ -16,24 +14,49 @@ class ExtendedShapeTransformationWithEquations(Scene):
             (Rectangle(width=2, height=1), Tex("$A = lw$").scale(0.5)),
             (RegularPolygon(n=5), Tex("$A = \\frac{1}{4}\\sqrt{5(5+2\\sqrt{5})}a^2$").scale(0.5)),
             (RegularPolygon(n=6), Tex("$A = \\frac{3\\sqrt{3}}{2}a^2$").scale(0.5)),
-            (RegularPolygon(n=7), Tex("$A \\approx 3.63a^2$").scale(0.5)), # Approximate formula for heptagon area
-            (RegularPolygon(n=8), Tex("$A = 2a^2(1+\\sqrt{2})$").scale(0.5))
+            (RegularPolygon(n=7), Tex("$A \\approx 3.63a^2$").scale(0.5)), 
+            (RegularPolygon(n=8), Tex("$A = 2a^2(1+\\sqrt{2})$").scale(0.5)),
+            # Cardioid
+            (ParametricFunction(
+                lambda t: np.array([
+                    0.5 * (2 * np.cos(t) - np.cos(2*t)),
+                    0.5 * (2 * np.sin(t) - np.sin(2*t)),
+                    0]),
+                t_range=[0, 2*PI],
+                color=BLUE), Tex("Cardioid").scale(0.5)),
+            # Spiral
+            (ParametricFunction(
+                lambda t: np.array([
+                    t * np.cos(t),
+                    t * np.sin(t),
+                    0]),
+                t_range=[0, 4*PI],
+                color=PURPLE), Tex("Spiral").scale(0.5)),
+            # Lissajous Curve
+            (ParametricFunction(
+                lambda t: np.array([
+                    np.sin(3*t),
+                    np.sin(2*t),
+                    0]),
+                t_range=[0, 2*PI],
+                color=RED), Tex("Lissajous").scale(0.5)),
         ]
 
         # Shuffle the shapes and equations randomly
         random.shuffle(shapes_and_equations)
 
-        # Display the initial line
-        self.play(Create(line))
+        # Create an initial shape and equation
+        shape, equation = shapes_and_equations.pop(0)
+        self.play(Create(shape))
+        equation.next_to(shape, direction=DOWN, buff=0.5)
+        self.play(Write(equation))
         self.wait(0.5)
 
-        # Transform the line into each shape in the randomly determined order and display equation
-        for shape, equation in shapes_and_equations:
-            self.play(Transform(line, shape), run_time=1)
-            equation.next_to(line, DOWN)
-            self.play(Write(equation))
+        # Transform the shape into each shape in the randomly determined order and transform equation
+        for next_shape, next_equation in shapes_and_equations:
+            next_equation.next_to(shape, direction=DOWN, buff=0.5)
+            self.play(Transform(shape, next_shape), Transform(equation, next_equation), run_time=1)
             self.wait(0.5)
-            self.play(FadeOut(equation))
 
         # Clear the screen
-        self.play(FadeOut(line))
+        self.play(FadeOut(shape), FadeOut(equation))
