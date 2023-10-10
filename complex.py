@@ -22,10 +22,15 @@ class Create3DCubeWithEquations(ThreeDScene):
         square_eqn.next_to(square, DOWN, buff=0.5)
         cube_eqn.next_to(cube, DOWN, buff=0.5)
 
+        # Create a 2D plane using a large rectangle and set its opacity, color, and position
+        plane = Rectangle(height=6, width=6, fill_opacity=0.2, color=BLUE)
+        plane.set_stroke(color=WHITE, width=0.5)
+
         # Set the initial camera orientation rotated 90 degrees to the left
         self.set_camera_orientation(phi=0, theta=-PI/2)
 
-        # Add the line and its equation
+        # Add the plane, line, and its equation
+        self.add(plane)
         self.play(
             Create(line),
             Write(line_eqn)
@@ -47,7 +52,7 @@ class Create3DCubeWithEquations(ThreeDScene):
             run_time=3
         )
 
-        # Adjust the position of the cube equation after cube is rendered
+        # Adjust the position of the cube equation after the cube is rendered
         cube_eqn.next_to(cube, DOWN, buff=0.5)
 
         # Move the camera to the isometric view
