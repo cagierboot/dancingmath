@@ -22,8 +22,8 @@ class Create3DCubeWithEquations(ThreeDScene):
         square_eqn.next_to(square, DOWN, buff=0.5)
         cube_eqn.next_to(cube, DOWN, buff=0.5)
 
-        # Set the initial camera orientation
-        self.set_camera_orientation(phi=0, theta=0)
+        # Set the initial camera orientation rotated 90 degrees to the left
+        self.set_camera_orientation(phi=0, theta=-PI/2)
 
         # Add the line and its equation
         self.play(
@@ -51,7 +51,7 @@ class Create3DCubeWithEquations(ThreeDScene):
         cube_eqn.next_to(cube, DOWN, buff=0.5)
 
         # Move the camera to the isometric view
-        self.move_camera(phi=PI/4, theta=PI/4, run_time=2)
+        self.move_camera(phi=PI/4, theta=PI/4 + PI/2, run_time=2)
         self.begin_ambient_camera_rotation(rate=0.2)
         self.wait(5)
         self.stop_ambient_camera_rotation()
