@@ -1,5 +1,7 @@
 # This file is used internally by FFMPEG.
-file 'file:/Users/markortega/pines/dancingmath/media/videos/complex/480p15/partial_movie_files/Create3DCube/3584237316_1192226829_223132457.mp4'
-file 'file:/Users/markortega/pines/dancingmath/media/videos/complex/480p15/partial_movie_files/Create3DCube/1536514277_3776593507_1169160788.mp4'
-file 'file:/Users/markortega/pines/dancingmath/media/videos/complex/480p15/partial_movie_files/Create3DCube/1536514277_4118028503_3531628062.mp4'
-file 'file:/Users/markortega/pines/dancingmath/media/videos/complex/480p15/partial_movie_files/Create3DCube/279546792_3533051148_2065609005.mp4'
+file 'file:/Users/markortega/pines/dancingmath/media/videos/complex/480p15/partial_movie_files/Create3DCube/3584237316_884743540_223132457.mp4'
+file 'file:/Users/markortega/pines/dancingmath/media/videos/complex/480p15/partial_movie_files/Create3DCube/1536514277_3776593507_3405221971.mp4'
+file 'file:/Users/markortega/pines/dancingmath/media/videos/complex/480p15/partial_movie_files/Create3DCube/1536514277_1446966390_1907286397.mp4'
+file 'file:/Users/markortega/pines/dancingmath/media/videos/complex/480p15/partial_movie_files/Create3DCube/1536514277_1329314881_3754192751.mp4'
+file 'file:/Users/markortega/pines/dancingmath/media/videos/complex/480p15/partial_movie_files/Create3DCube/1536514277_4118028503_1801768823.mp4'
+file 'file:/Users/markortega/pines/dancingmath/media/videos/complex/480p15/partial_movie_files/Create3DCube/279546792_3533051148_3645868863.mp4'
