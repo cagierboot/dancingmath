@@ -1,30 +1,35 @@
 from manim import *
 import random
 
-class ShapeTransformation(Scene):
+class ExtendedShapeTransformation(Scene):
     def construct(self):
-      
+
         # Create a line
         line = Line(start=[-1, 0, 0], end=[1, 0, 0])
 
-        # Create a square
+        # Create various shapes
         square = Square()
-
-        # Create a circle
         circle = Circle()
-
-        # Create a triangle
         triangle = Triangle()
+        ellipse = Ellipse(width=2, height=1)
+        rectangle = Rectangle(width=2, height=1)
+        pentagon = RegularPolygon(n=5)
+        hexagon = RegularPolygon(n=6)
+        heptagon = RegularPolygon(n=7)
+        octagon = RegularPolygon(n=8)
 
-        # Display the line
+        # List of all shapes
+        shapes = [
+            square, circle, triangle, ellipse,
+            rectangle, pentagon, hexagon, heptagon, octagon
+        ]
+
+        # Shuffle the shapes randomly
+        random.shuffle(shapes)
+
+        # Display the initial line
         self.play(Create(line))
         self.wait(0.5)
-
-        # Create a list of shapes
-        shapes = [square, circle, triangle]
-
-        # Shuffle the order of shapes randomly
-        random.shuffle(shapes)
 
         # Transform the line into each shape in the randomly determined order
         for shape in shapes:
