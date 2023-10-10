@@ -18,6 +18,6 @@ class CreateGraph(ThreeDScene):
         self.play(Transform(square, cube))
         self.wait(1)
 
-        # Move Camera to show 3D structure of the cube
-        self.set_camera_orientation(phi=75 * DEGREES, theta=30 * DEGREES)
+        # Slowly move Camera to show 3D structure of the cube
+        self.move_camera(phi=75*DEGREES, theta=45*DEGREES, run_time=3)
         self.wait(2)

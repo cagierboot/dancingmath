@@ -5,4 +5,5 @@ file 'file:/Users/markortega/pines/dancingmath/media/videos/complex/480p15/parti
 file 'file:/Users/markortega/pines/dancingmath/media/videos/complex/480p15/partial_movie_files/CreateGraph/1240966961_910656892_2296881648.mp4'
 file 'file:/Users/markortega/pines/dancingmath/media/videos/complex/480p15/partial_movie_files/CreateGraph/1240966961_588066008_474117181.mp4'
 file 'file:/Users/markortega/pines/dancingmath/media/videos/complex/480p15/partial_movie_files/CreateGraph/1240966961_910656892_266430069.mp4'
-file 'file:/Users/markortega/pines/dancingmath/media/videos/complex/480p15/partial_movie_files/CreateGraph/466189239_3965333167_355369903.mp4'
+file 'file:/Users/markortega/pines/dancingmath/media/videos/complex/480p15/partial_movie_files/CreateGraph/1240966961_3402682823_1232390278.mp4'
+file 'file:/Users/markortega/pines/dancingmath/media/videos/complex/480p15/partial_movie_files/CreateGraph/723957399_3965333167_2955469668.mp4'
