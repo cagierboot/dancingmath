@@ -2,8 +2,11 @@ from manim import *
 
 class Create3DCube(ThreeDScene):
     def construct(self):
-        # Create a cube
-        cube = Cube()
+        # Create a cube with no fill
+        cube = Cube(fill_opacity=0)
+        
+        # Set the stroke color and width to highlight the edges if needed
+        cube.set_stroke(color=WHITE, width=2)
 
         # Set the initial camera orientation to isometric view
         self.set_camera_orientation(phi=PI / 4, theta=PI / 4)
