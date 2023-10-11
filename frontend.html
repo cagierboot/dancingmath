@@ -53,9 +53,10 @@
 
     .upload-container {
         display: flex;
+        flex-direction: column; /* Keep as column to stack elements vertically */
         justify-content: flex-start;
-        align-items: center;
-        padding-left: 50px;  /* Adjust the value as needed */
+        align-items: flex-start; /* Changed from center to flex-start to align items to the left */
+        padding-left: 50px;
         margin: 20px;
     }
     
@@ -63,6 +64,7 @@
     .upload-btn-wrapper {
     position: relative;
     display: inline-block;
+    margin-top: 100px;
 }
 
         .btn {
@@ -77,53 +79,40 @@
     }
 
 
-        .upload-btn-wrapper input[type=file] {
-            font-size: 100px;
-            position: absolute;
-            left: 0;
-            top: 0;
-            opacity: 0;
-        }
-
-        .notification {
+    .upload-btn-wrapper input[type=file] {
+    font-size: 100px;
     position: absolute;
-    border: 2px solid white;
-    right: 0;
-    top: -55px;  /* Adjusted position */
     left: 0;
-    margin: auto;  /* Added to center horizontally */
+    top: 0;
+    opacity: 0;
+    width: 200px; /* Adjust according to your needs */
+    height: 40px; /* Adjust according to your needs */
+}
+
+.button-container {
+    position: relative;
+    display: inline-flex;
+    flex-direction: row; /* Changed from column to row */
+    align-items: center; /* Changed to center to align items vertically */
+}
+
+.notification, .notification2 {
+    border: 2px solid white;
     background-color: black;
     color: white;
     border-radius: 50%;
+    position: relative;
+    top: -50px; /* Adjust this as per your design requirement */
     width: 30px;
     height: 30px;
+    left: 30px;
     text-align: center;
     line-height: 30px;
     font-size: 16px;
     z-index: 2;
 }
-
-.notification2 {
-            position: absolute;
-            border: 2px solid white;
-            right: 0;
-            top: 35px;  /* Adjusted position */
-            left: 0;
-            margin: auto;  
-            background-color: black;
-            color: white;
-            border-radius: 50%;
-            width: 30px;
-            height: 30px;
-            text-align: center;
-            line-height: 30px;
-            font-size: 16px;
-            z-index: 2;
-        }
-
-
-
     </style>
+
 </head>
     
     <script>
@@ -154,47 +143,35 @@
 </head>
 <body>
     <div id="title">Dancing Math</div>
-
-
+    <div class="video-container">
+        <video autoplay muted loop>
+            <source src="HomescreenVideo.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
+    </div>
     
-    
-    <noscript>
-        <p style="color: red;">JavaScript is not enabled in your web browser.</p>
-    </noscript>
-    <p id="js-check" style="color: green;">
-        If you can see this message, JavaScript is enabled.
-    </p>
-    <body>
-        <div id="title">Dancing Math</div>
-    
-        <div class="video-container">
-            <video autoplay muted loop>
-                <source src="HomescreenVideo.mp4" type="video/mp4">
-                Your browser does not support the video tag.
-            </video>
-        </div>
-    
-        <div class="upload-container">
-            <div class="upload-btn-wrapper">
+    <div class="upload-container">
+        <div class="upload-btn-wrapper">
+            <div class="button-container">
                 <div class="notification">1</div>
                 <button class="btn">Upload an Audio File</button>
-                <input type="file" name="myfile" accept="audio/*" />
             </div>
+            <input type="file" name="myfile" accept="audio/*" />
         </div>
     
-        
-    
-            <!-- New button and notification -->
-            <div class="upload-btn-wrapper" style="margin-left: 20px;">  <!-- Added inline style to create space between the buttons -->
-                <div class="notification2">2</div>  <!-- Added new class for the new notification -->
-                <button class="btn">Generate</button>  <!-- Changed button text -->
-                <!-- Removed input element if not needed, or modify as needed -->
+        <div class="upload-btn-wrapper" style="margin-left: 20px;">
+            <div class="button-container">
+                <div class="notification2">2</div>
+                <button class="btn">Generate</button>
             </div>
         </div>
+    </div>
     
-        <script type="text/javascript">
-            document.getElementById("js-check").style.display = "none";
-        </script>
-    </body>
+    <script type="text/javascript">
+        document.getElementById("js-check").style.display = "none";
+    </script>
+</body>
+
+
     
 </html>
