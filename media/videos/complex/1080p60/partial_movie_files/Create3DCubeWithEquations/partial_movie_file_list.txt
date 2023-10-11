@@ -1,0 +1,8 @@
+# This file is used internally by FFMPEG.
+file 'file:/Users/markortega/pines/dancingmath/media/videos/complex/1080p60/partial_movie_files/Create3DCubeWithEquations/3522960179_4269184310_223132457.mp4'
+file 'file:/Users/markortega/pines/dancingmath/media/videos/complex/1080p60/partial_movie_files/Create3DCubeWithEquations/996697702_3776593507_2973770534.mp4'
+file 'file:/Users/markortega/pines/dancingmath/media/videos/complex/1080p60/partial_movie_files/Create3DCubeWithEquations/996697702_3794146644_1309344808.mp4'
+file 'file:/Users/markortega/pines/dancingmath/media/videos/complex/1080p60/partial_movie_files/Create3DCubeWithEquations/996697702_1329314881_2990148326.mp4'
+file 'file:/Users/markortega/pines/dancingmath/media/videos/complex/1080p60/partial_movie_files/Create3DCubeWithEquations/996697702_169216676_3419115152.mp4'
+file 'file:/Users/markortega/pines/dancingmath/media/videos/complex/1080p60/partial_movie_files/Create3DCubeWithEquations/3365317554_3165710753_2597894418.mp4'
+file 'file:/Users/markortega/pines/dancingmath/media/videos/complex/1080p60/partial_movie_files/Create3DCubeWithEquations/3828545021_3533051148_1567495264.mp4'
