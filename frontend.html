@@ -96,21 +96,37 @@
     align-items: center; /* Changed to center to align items vertically */
 }
 
-.notification, .notification2 {
-    border: 2px solid white;
-    background-color: black;
-    color: white;
-    border-radius: 50%;
-    position: relative;
-    top: -50px; /* Adjust this as per your design requirement */
-    width: 30px;
-    height: 30px;
-    left: 30px;
-    text-align: center;
-    line-height: 30px;
-    font-size: 16px;
-    z-index: 2;
-}
+.notification {
+        border: 2px solid white;
+        background-color: black;
+        color: white;
+        border-radius: 50%;
+        position: relative;
+        top: -50px; 
+        width: 30px;
+        height: 30px;
+        left: 120px; /* Adjust this value to move the notification 1 to the right */
+        text-align: center;
+        line-height: 30px;
+        font-size: 16px;
+        z-index: 2;
+    }
+
+    .notification2 {
+        border: 2px solid white;
+        background-color: black;
+        color: white;
+        border-radius: 50%;
+        position: relative;
+        top: -50px; 
+        width: 30px;
+        height: 30px;
+        left: 75px; /* This will make notification 2 stay still */
+        text-align: center;
+        line-height: 30px;
+        font-size: 16px;
+        z-index: 2;
+    }
     </style>
 
 </head>
@@ -159,7 +175,7 @@
             <input type="file" name="myfile" accept="audio/*" />
         </div>
     
-        <div class="upload-btn-wrapper" style="margin-left: 20px;">
+        <div class="upload-btn-wrapper" style="margin-left: 40px;">
             <div class="button-container">
                 <div class="notification2">2</div>
                 <button class="btn">Generate</button>
