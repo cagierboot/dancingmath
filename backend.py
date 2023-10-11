@@ -1,10 +1,11 @@
 from flask import Flask, send_file, jsonify
-
+from flask_cors import CORS
+  
 app = Flask(__name__)  # Make sure this line is before any @app.route decorators
 
 @app.route('/')
 def hello_world():
-    return "Hello, World"
+    return "Hello, Mark"
 
 @app.route('/video')
 def video():

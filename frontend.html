@@ -22,10 +22,18 @@
         video {
             border: none;
         }
+
+        #js-check {
+            color: green;
+        }
+
+        noscript {
+            color: red;
+        }
     </style>
     <script>
-        window.onload = async () => {
-
+       window.onload = async () => {
+            console.log('Hello');
             console.log('JavaScript Loaded');
             try {
                 const response = await fetch('/');
@@ -33,33 +41,33 @@
                     throw Error(response.statusText);
                 }
                 const data = await response.text();
-    
+
                 const h1 = document.createElement('h1');
                 h1.innerText = data;
                 document.body.appendChild(h1);
-    
+
                 const video = document.createElement('video');
                 video.controls = true;
                 video.width = 640;
                 video.height = 360;
-    
+
                 const source = document.createElement('source');
                 source.src = '/video';
                 source.type = 'video/mp4';
-    
+
                 video.appendChild(source);
                 document.querySelector('.center').appendChild(video);
-    
+
                 // Log the video loading status
                 video.addEventListener('loadeddata', () => {
                     console.log('Video is loaded and can be played');
                 }, false);
-    
+
                 // Log errors if the video fails to load
                 video.addEventListener('error', () => {
                     console.log('Failed to load the video');
                 }, false);
-    
+
                 // Check if /video endpoint is accessible and log the response
                 const videoResponse = await fetch('/video');
                 console.log('Video endpoint status:', videoResponse.status);
@@ -73,12 +81,22 @@
             }
         };
     </script>
-    
-    
+    <script>
+        console.log('Hello, directly from the HTML');
+    </script>
 </head>
 <body>
     <div class="center">
         <!-- The video will be inserted here by JavaScript -->
     </div>
+    <noscript>
+        <p style="color: red;">JavaScript is not enabled in your web browser.</p>
+    </noscript>
+    <p id="js-check" style="color: green;">
+        If you can see this message, JavaScript is enabled.
+    </p>
+    <script type="text/javascript">
+        document.getElementById("js-check").style.display = "none";
+    </script>
 </body>
 </html>
