@@ -50,6 +50,39 @@
         font-style: italic;  /* Make the font italic */
         font-family: 'Pacifico', cursive;
     }
+
+    .upload-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 20px;
+        }
+
+        .upload-btn-wrapper {
+            position: relative;
+            overflow: hidden;
+            display: inline-block;
+        }
+
+        .btn {
+            border: 2px solid gray;
+            color: gray;
+            background-color: white;
+            padding: 8px 20px;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: bold;
+        }
+
+        .upload-btn-wrapper input[type=file] {
+            font-size: 100px;
+            position: absolute;
+            left: 0;
+            top: 0;
+            opacity: 0;
+        }
+    </style>
+</head>
     </style>
     <script>
        window.onload = async () => {
@@ -94,6 +127,32 @@
     <p id="js-check" style="color: green;">
         If you can see this message, JavaScript is enabled.
     </p>
+    <body>
+        <div id="title">Dancing Math</div>
+    
+        <div class="video-container">
+            <video autoplay muted loop>
+                <source src="HomescreenVideo.mp4" type="video/mp4">
+                Your browser does not support the video tag.
+            </video>
+        </div>
+    
+        <div class="upload-container">
+            <div class="upload-btn-wrapper">
+                <button class="btn">Upload an Audio File</button>
+                <input type="file" name="myfile" accept="audio/*" />
+            </div>
+        </div>
+    
+        <noscript>
+            <p style="color: red;">JavaScript is not enabled in your web browser.</p>
+        </noscript>
+        <p id="js-check" style="color: green;">
+            If you can see this message, JavaScript is enabled.
+        </p>
+        <script type="text/javascript">
+            document.getElementById("js-check").style.display = "none";
+        </script>
     <script type="text/javascript">
         document.getElementById("js-check").style.display = "none";
     </script>
