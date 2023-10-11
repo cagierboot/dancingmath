@@ -13,16 +13,20 @@
         }
 
         .video-container {
-            position: relative;
-            width: 100%;
-            height: auto;
-            overflow: hidden;
-        }
+        position: relative;
+        max-width: 600px; /* You can adjust this value */
+        height: auto;
+        margin: auto;
+        overflow: hidden;
+       
+    }
 
-        video {
-            width: 100%;
-            height: auto;
-        }
+    video {
+        width: 100%;
+        margin-top: 50px;
+        height: auto;
+        max-height: 500px; /* You can adjust this value */
+    }
 
         .center {
             display: flex;
@@ -158,10 +162,10 @@
     </script>
 </head>
 <body>
-    <div id="title">Dancing Math</div>
+    <div id="title">Markeezy Orteezy</div>
     <div class="video-container">
         <video autoplay muted loop>
-            <source src="HomescreenVideo.mp4" type="video/mp4">
+            <source src="HomeAnimation.mp4" type="video/mp4">
             Your browser does not support the video tag.
         </video>
     </div>
