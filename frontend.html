@@ -52,17 +52,19 @@
     }
 
     .upload-container {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            margin: 20px;
-        }
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+        padding-left: 50px;  /* Adjust the value as needed */
+        margin: 20px;
+    }
+    
 
-        .upload-btn-wrapper {
-            position: relative;
-            overflow: hidden;
-            display: inline-block;
-        }
+    .upload-btn-wrapper {
+        position: relative;
+        overflow: visible; /* Changed from hidden to visible */
+        display: inline-block;
+    }
 
         .btn {
         border: 2px solid white;  /* Changed border color to white */
@@ -72,19 +74,38 @@
         border-radius: 8px;
         font-size: 16px;
         font-weight: bold;
+        
     }
 
 
         .upload-btn-wrapper input[type=file] {
-            font-size: 95px;
+            font-size: 100px;
             position: absolute;
             left: 0;
             top: 0;
             opacity: 0;
         }
+
+        .notification {
+        position: absolute;
+        border: 2px solid white; 
+        right: 50%;
+        top: -50px;  /* Adjusted position to make it more visible */
+        background-color: rgb(0, 0, 0);  /* Kept the color as red for visibility */
+        color: white;
+        border-radius: 50%;
+        width: 30px;  /* Increased size for visibility */
+        height: 30px;
+        text-align: center;
+        line-height: 30px;  /* Adjusted for the increased size */
+        font-size: 16px;  /* Increased font size for visibility */
+        z-index: 2;
+        transform: translateX(50%);
+    }
+
     </style>
 </head>
-    </style>
+    
     <script>
        window.onload = async () => {
             console.log('Hello');
@@ -135,10 +156,12 @@
     
         <div class="upload-container">
             <div class="upload-btn-wrapper">
+                <div class="notification">1</div>  <!-- Added this div for the notification circle -->
                 <button class="btn">Upload an Audio File</button>
                 <input type="file" name="myfile" accept="audio/*" />
             </div>
         </div>
+        
     
         <noscript>
             <p style="color: red;">JavaScript is not enabled in your web browser.</p>
