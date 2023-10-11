@@ -103,6 +103,24 @@
     z-index: 2;
 }
 
+.notification2 {
+            position: absolute;
+            border: 2px solid white;
+            right: 0;
+            top: 35px;  /* Adjusted position */
+            left: 0;
+            margin: auto;  
+            background-color: black;
+            color: white;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            text-align: center;
+            line-height: 30px;
+            font-size: 16px;
+            z-index: 2;
+        }
+
 
 
     </style>
@@ -164,9 +182,15 @@
             </div>
         </div>
     
-        <noscript>
-            <p style="color: red;">JavaScript is not enabled in your web browser.</p>
-        </noscript>
+        
+    
+            <!-- New button and notification -->
+            <div class="upload-btn-wrapper" style="margin-left: 20px;">  <!-- Added inline style to create space between the buttons -->
+                <div class="notification2">2</div>  <!-- Added new class for the new notification -->
+                <button class="btn">Generate</button>  <!-- Changed button text -->
+                <!-- Removed input element if not needed, or modify as needed -->
+            </div>
+        </div>
     
         <script type="text/javascript">
             document.getElementById("js-check").style.display = "none";
