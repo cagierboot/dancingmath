@@ -1,12 +1,7 @@
 from manim import *
 
-class Create3DCubeWithEquations(ThreeDScene):
+class Create3DCube(ThreeDScene):
     def construct(self):
-        # Equations
-        line_eqn = MathTex("y = mx + c", color=WHITE).scale(0.7)
-        square_eqn = MathTex("x^2 + y^2 = r^2", color=WHITE).scale(0.7)
-        cube_eqn = MathTex("x^2 + y^2 + z^2 = r^2", color=WHITE).scale(0.7)
-
         # Create a line
         line = Line(start=[-1,0,0], end=[1,0,0], color=WHITE)
 
@@ -15,48 +10,36 @@ class Create3DCubeWithEquations(ThreeDScene):
 
         # Create a cube with no fill
         cube = Cube(fill_opacity=0)
+
+        # Set the stroke color and width to highlight the edges if needed
         cube.set_stroke(color=WHITE, width=2)
 
-        # Position the equations
-        line_eqn.next_to(line, DOWN, buff=0.5)
-        square_eqn.next_to(square, DOWN, buff=0.5)
-        cube_eqn.next_to(cube, DOWN, buff=0.5)
+        # Set the initial camera orientation to straight forward view
+        self.set_camera_orientation(phi=0, theta=0)  # Adjust these angles as needed
 
-        # Create a 2D plane using a large rectangle and set its opacity, color, and position
-        plane = Rectangle(height=6, width=6, fill_opacity=0.2, color=BLUE)
-        plane.set_stroke(color=WHITE, width=0.5)
+        # Add the line
+        self.play(Create(line))
 
-        # Set the initial camera orientation rotated 90 degrees to the left
-        self.set_camera_orientation(phi=0, theta=-PI/2)
-
-        # Add the plane, line, and its equation
-        self.add(plane)
-        self.play(
-            Create(line),
-            Write(line_eqn)
-        )
+        # Wait for a moment
         self.wait(1)
 
-        # Transform the line into a square and the equation
-        self.play(
-            ReplacementTransform(line, square),
-            ReplacementTransform(line_eqn, square_eqn),
-            run_time=2
-        )
+        # Transform the line into a square with increased run_time
+        self.play(ReplacementTransform(line, square), run_time=2)  # Increased run_time to 2 seconds
+
+        # Wait for another moment
         self.wait(1)
 
-        # Transform the square into a cube and the equation
-        self.play(
-            ReplacementTransform(square, cube),
-            ReplacementTransform(square_eqn, cube_eqn),
-            run_time=3
-        )
-
-        # Adjust the position of the cube equation after the cube is rendered
-        cube_eqn.next_to(cube, DOWN, buff=0.5)
+        # Transform the square into a cube with increased run_time
+        self.play(ReplacementTransform(square, cube), run_time=3)  # Increased run_time to 3 seconds
 
         # Move the camera to the isometric view
-        self.move_camera(phi=PI/4, theta=PI/4 + PI/2, run_time=2)
+        self.move_camera(phi=PI/4, theta=PI/4, run_time=2)  # Adjusting the run_time as needed
+
+        # Start the camera rotation
         self.begin_ambient_camera_rotation(rate=0.2)
+
+        # Show the cube for 5 seconds
         self.wait(5)
+
+        # Stop the camera rotation
         self.stop_ambient_camera_rotation()

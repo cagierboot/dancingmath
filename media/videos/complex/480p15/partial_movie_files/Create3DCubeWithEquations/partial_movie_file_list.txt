@@ -5,4 +5,6 @@ file 'file:/Users/markortega/pines/dancingmath/media/videos/complex/480p15/parti
 file 'file:/Users/markortega/pines/dancingmath/media/videos/complex/480p15/partial_movie_files/Create3DCubeWithEquations/2335598466_1329314881_2494623448.mp4'
 file 'file:/Users/markortega/pines/dancingmath/media/videos/complex/480p15/partial_movie_files/Create3DCubeWithEquations/2335598466_169216676_1037065570.mp4'
 file 'file:/Users/markortega/pines/dancingmath/media/videos/complex/480p15/partial_movie_files/Create3DCubeWithEquations/2501213012_3165710753_1079122574.mp4'
-file 'file:/Users/markortega/pines/dancingmath/media/videos/complex/480p15/partial_movie_files/Create3DCubeWithEquations/1838538855_3533051148_1446263012.mp4'
+file 'file:/Users/markortega/pines/dancingmath/media/videos/complex/480p15/partial_movie_files/Create3DCubeWithEquations/4267380865_3533051148_1446263012.mp4'
+file 'file:/Users/markortega/pines/dancingmath/media/videos/complex/480p15/partial_movie_files/Create3DCubeWithEquations/3515813884_521623893_4000887363.mp4'
+file 'file:/Users/markortega/pines/dancingmath/media/videos/complex/480p15/partial_movie_files/Create3DCubeWithEquations/804505245_1329314881_397096898.mp4'
