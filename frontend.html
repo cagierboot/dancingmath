@@ -25,26 +25,56 @@
     </style>
     <script>
         window.onload = async () => {
-const response = await fetch('/');
-const data = await response.text();
 
-            const h1 = document.createElement('h1');
-            h1.innerText = data.message;
-            document.body.appendChild(h1);
-
-            const video = document.createElement('video');
-            video.controls = true;
-            video.width = 640;
-            video.height = 360;
-
-            const source = document.createElement('source');
-            source.src = '/video';
-            source.type = 'video/mp4';
-
-            video.appendChild(source);
-            document.querySelector('.center').appendChild(video);
+            console.log('JavaScript Loaded');
+            try {
+                const response = await fetch('/');
+                if (!response.ok) { 
+                    throw Error(response.statusText);
+                }
+                const data = await response.text();
+    
+                const h1 = document.createElement('h1');
+                h1.innerText = data;
+                document.body.appendChild(h1);
+    
+                const video = document.createElement('video');
+                video.controls = true;
+                video.width = 640;
+                video.height = 360;
+    
+                const source = document.createElement('source');
+                source.src = '/video';
+                source.type = 'video/mp4';
+    
+                video.appendChild(source);
+                document.querySelector('.center').appendChild(video);
+    
+                // Log the video loading status
+                video.addEventListener('loadeddata', () => {
+                    console.log('Video is loaded and can be played');
+                }, false);
+    
+                // Log errors if the video fails to load
+                video.addEventListener('error', () => {
+                    console.log('Failed to load the video');
+                }, false);
+    
+                // Check if /video endpoint is accessible and log the response
+                const videoResponse = await fetch('/video');
+                console.log('Video endpoint status:', videoResponse.status);
+                if (videoResponse.ok) {
+                    console.log('Video received:', await videoResponse.text());
+                } else {
+                    console.log('Failed to retrieve the video');
+                }
+            } catch (error) {
+                console.log('There was a problem with the fetch operation: ', error);
+            }
         };
     </script>
+    
+    
 </head>
 <body>
     <div class="center">

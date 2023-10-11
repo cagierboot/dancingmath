@@ -8,8 +8,11 @@ def hello_world():
 
 @app.route('/video')
 def video():
-    return send_file('HomescreenVideo.mp4', mimetype='video/mp4')
-
+    print("Video endpoint hit")
+    try:
+        return send_file('HomescreenVideo.mp4', mimetype='video/mp4')
+    except Exception as e:
+        print("Error sending file: ", e)
 
 if __name__ == '__main__':
     app.run(debug=True)
