@@ -12,15 +12,23 @@
             background-color: rgb(0, 0, 0);
         }
 
+        .video-container {
+            position: relative;
+            width: 100%;
+            height: auto;
+            overflow: hidden;
+        }
+
+        video {
+            width: 100%;
+            height: auto;
+        }
+
         .center {
             display: flex;
             justify-content: center;
             align-items: center;
             height: 100%;
-        }
-
-        video {
-            border: none;
         }
 
         #js-check {
@@ -36,7 +44,8 @@
             console.log('Hello');
             console.log('JavaScript Loaded');
             try {
-                const response = await fetch('/');
+                const response = await fetch('http://localhost:5000/');
+
                 if (!response.ok) { 
                     throw Error(response.statusText);
                 }
@@ -46,36 +55,7 @@
                 h1.innerText = data;
                 document.body.appendChild(h1);
 
-                const video = document.createElement('video');
-                video.controls = true;
-                video.width = 640;
-                video.height = 360;
-
-                const source = document.createElement('source');
-                source.src = '/video';
-                source.type = 'video/mp4';
-
-                video.appendChild(source);
-                document.querySelector('.center').appendChild(video);
-
-                // Log the video loading status
-                video.addEventListener('loadeddata', () => {
-                    console.log('Video is loaded and can be played');
-                }, false);
-
-                // Log errors if the video fails to load
-                video.addEventListener('error', () => {
-                    console.log('Failed to load the video');
-                }, false);
-
-                // Check if /video endpoint is accessible and log the response
-                const videoResponse = await fetch('/video');
-                console.log('Video endpoint status:', videoResponse.status);
-                if (videoResponse.ok) {
-                    console.log('Video received:', await videoResponse.text());
-                } else {
-                    console.log('Failed to retrieve the video');
-                }
+                // Removed video related code here
             } catch (error) {
                 console.log('There was a problem with the fetch operation: ', error);
             }
@@ -86,9 +66,13 @@
     </script>
 </head>
 <body>
-    <div class="center">
-        <!-- The video will be inserted here by JavaScript -->
+    <div class="video-container">
+        <video autoplay muted loop>
+            <source src="HomescreenVideo.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
     </div>
+    
     <noscript>
         <p style="color: red;">JavaScript is not enabled in your web browser.</p>
     </noscript>
