@@ -38,6 +38,18 @@
         noscript {
             color: red;
         }
+
+        #title {
+        position: absolute;
+        top: 10px;  /* Change this value to move the text down */
+        left: 0;
+        margin: 10px;
+        color: white;
+        font-size: 16px;
+        z-index: 1; /* Ensure the text appears above the video */
+        font-style: italic;  /* Make the font italic */
+        font-family: 'Pacifico', cursive;
+    }
     </style>
     <script>
        window.onload = async () => {
@@ -66,6 +78,9 @@
     </script>
 </head>
 <body>
+    <div id="title">Dancing Math</div>
+
+
     <div class="video-container">
         <video autoplay muted loop>
             <source src="HomescreenVideo.mp4" type="video/mp4">
