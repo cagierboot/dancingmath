@@ -15,7 +15,7 @@ loudness = librosa.amplitude_to_db(S, ref=np.max)
 time_index = (beat_times * sr / 512).astype(int)  # Adjust denominator to your STFT hop length
 loudness_beat = loudness[:, time_index].mean(axis=0)  # Take mean loudness if multiple frequencies per time index
 
-# Normalize the loudness values to a scale from 0 to 1 for changing the color intensity
+# Normalize the loudness values to a scale from 0 to 1 for scaling shapes
 loudness = (loudness_beat - np.min(loudness_beat)) / (np.max(loudness_beat) - np.min(loudness_beat))
 
 class Create3DCubeWithoutEquations(ThreeDScene):
@@ -44,11 +44,6 @@ class Create3DCubeWithoutEquations(ThreeDScene):
 
             # Create new shapes for each transformation
             next_shape = shape_factories[i % len(shape_factories)]()
-
-            # Change the color intensity according to the loudness
-            color_intensity = loudness[i]
-            color = rgb_to_color([color_intensity, color_intensity, color_intensity])
-            next_shape.set_color(color)
 
             # Scale the shape according to the loudness
             scaling_factor = 0.5 + loudness[i] * 3  # Adjust the multiplier to make the effect more or less dramatic
