@@ -50,6 +50,10 @@ class Create3DCubeWithoutEquations(ThreeDScene):
             color = rgb_to_color([color_intensity, color_intensity, color_intensity])
             next_shape.set_color(color)
 
+            # Scale the shape according to the loudness
+            scaling_factor = 0.5 + loudness[i] * 3  # Adjust the multiplier to make the effect more or less dramatic
+            next_shape.scale(scaling_factor)
+
             # Animate the transformation
             self.play(
                 ReplacementTransform(shape, next_shape),
