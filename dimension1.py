@@ -7,11 +7,16 @@ y, sr = librosa.load("expanse.mp3")
 tempo, beat_frames = librosa.beat.beat_track(y=y, sr=sr)
 beat_times = librosa.frames_to_time(beat_frames, sr=sr)
 
-# Compute the loudness in dB at each beat
-loudness = librosa.amplitude_to_db(np.abs(librosa.core.stft(y)), ref=np.max)
+# Compute the loudness in dB
+S = np.abs(librosa.stft(y))
+loudness = librosa.amplitude_to_db(S, ref=np.max)
 
-# Normalize the loudness values to a scale from 0 to 1 for resizing the shapes
-loudness = (loudness - np.min(loudness)) / (np.max(loudness) - np.min(loudness))
+# Get the loudness at each beat by converting beat times to indices on the time axis
+time_index = (beat_times * sr / 512).astype(int)  # Adjust denominator to your STFT hop length
+loudness_beat = loudness[:, time_index].mean(axis=0)  # Take mean loudness if multiple frequencies per time index
+
+# Normalize the loudness values to a scale from 0 to 1 for changing the color intensity
+loudness = (loudness_beat - np.min(loudness_beat)) / (np.max(loudness_beat) - np.min(loudness_beat))
 
 class Create3DCubeWithoutEquations(ThreeDScene):
     def construct(self):
@@ -35,12 +40,15 @@ class Create3DCubeWithoutEquations(ThreeDScene):
         # Loop through the beats to animate the transformations
         for i in range(total_beats):
             # Calculate the time duration until the next beat
-         
             duration = beat_times[i] - elapsed_time if i != 0 else 0.1
-
 
             # Create new shapes for each transformation
             next_shape = shape_factories[i % len(shape_factories)]()
+
+            # Change the color intensity according to the loudness
+            color_intensity = loudness[i]
+            color = rgb_to_color([color_intensity, color_intensity, color_intensity])
+            next_shape.set_color(color)
 
             # Animate the transformation
             self.play(
