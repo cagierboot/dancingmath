@@ -18,7 +18,7 @@ loudness_beat = loudness[:, time_index].mean(axis=0)  # Take mean loudness if mu
 # Normalize the loudness values to a scale from 0 to 1 for scaling shapes
 loudness = (loudness_beat - np.min(loudness_beat)) / (np.max(loudness_beat) - np.min(loudness_beat))
 
-class Create3DCubeWithoutEquations(ThreeDScene):
+class CreateMore3DShapes(ThreeDScene):
     def construct(self):
         # Getting the total number of beats
         total_beats = len(beat_times)
@@ -29,7 +29,10 @@ class Create3DCubeWithoutEquations(ThreeDScene):
         shape_factories = [
             lambda: Line(start=[-1,0,0], end=[1,0,0], color=WHITE),
             lambda: Square(color=WHITE),
-            lambda: Cube(fill_opacity=0).set_stroke(color=WHITE, width=2)
+            lambda: Cube(fill_opacity=0).set_stroke(color=WHITE, width=2),
+            lambda: Sphere(radius=1, resolution=(30, 40), fill_opacity=0).set_stroke(color=WHITE, width=2),
+            lambda: Cylinder(radius=1, height=2, resolution=(30, 40), fill_opacity=0).set_stroke(color=WHITE, width=2),
+            lambda: Prism(dimensions=[2,2,2], fill_opacity=0).set_stroke(color=WHITE, width=2)
         ]
 
         elapsed_time = 0  # Set the initial elapsed time to 0
@@ -60,5 +63,5 @@ class Create3DCubeWithoutEquations(ThreeDScene):
             elapsed_time += duration  # Update the elapsed time
 
 # Example usage:
-scene = Create3DCubeWithoutEquations()
+scene = CreateMore3DShapes()
 scene.render()
