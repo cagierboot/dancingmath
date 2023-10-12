@@ -1,10 +1,17 @@
 import librosa
 from manim import *
+import numpy as np
 
 # Load the song and get the beat timings
-y, sr = librosa.load("4th Dimension.mp4")
+y, sr = librosa.load("4D.mp3")
 tempo, beat_frames = librosa.beat.beat_track(y=y, sr=sr)
 beat_times = librosa.frames_to_time(beat_frames, sr=sr)
+
+# Compute the loudness in dB at each beat
+loudness = librosa.amplitude_to_db(y[beat_frames], ref=np.max)
+
+# Normalize the loudness values to a scale from 0 to 1 for resizing the shapes
+loudness = (loudness - np.min(loudness)) / (np.max(loudness) - np.min(loudness))
 
 class Create3DCubeWithoutEquations(ThreeDScene):
     def construct(self):
@@ -22,25 +29,26 @@ class Create3DCubeWithoutEquations(ThreeDScene):
 
         # Initialize the scene with the first shape
         shape = shape_factories[0]()
-        self.play(Create(shape))
-        self.wait(beat_times[0])  # Wait for the first beat
+        self.play(Create(shape))  # Removed the initial wait time
 
-        elapsed_time = beat_times[0]  # Keep track of the elapsed time
+        elapsed_time = 0  # Set the initial elapsed time to 0
 
         # Loop through the remaining beats to animate the transformations
-        for i in range(1, total_beats):
+        for i in range(total_beats):
             # Calculate the time duration until the next beat
-            duration = beat_times[i] - elapsed_time
+            duration = beat_times[i] - elapsed_time if i != 0 else beat_times[0]
 
             # Create new shapes for each transformation
             next_shape = shape_factories[i % len(shape_factories)]()
+
+            # Resize the shape based on the loudness
+            next_shape.scale(1 + loudness[i])
 
             # Animate the transformation
             self.play(
                 ReplacementTransform(shape, next_shape),
                 run_time=duration  # Sync with the beat
             )
-            self.wait(duration)  # Wait for the next beat
 
             # Set the current shape to the new ones for the next loop iteration
             shape = next_shape
@@ -48,5 +56,8 @@ class Create3DCubeWithoutEquations(ThreeDScene):
 
         # Add rotation to make the animation more dynamic
         self.begin_ambient_camera_rotation(rate=0.2)
-        self.wait(beat_times[-1] - elapsed_time)  # Wait until the end of the song
+        self.play(
+            Animation(shape),  # Keep the last shape on screen while rotating the camera
+            run_time=beat_times[-1] - elapsed_time  # Adjust the time to match the audio length
+        )
         self.stop_ambient_camera_rotation()
