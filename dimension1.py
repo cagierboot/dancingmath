@@ -31,9 +31,6 @@ class Create3DCubeWithoutEquations(ThreeDScene):
             lambda: Square(color=WHITE)
         ]
 
-        # All shape factories including the cube after the beat drops
-        all_shape_factories = initial_shape_factories + [lambda: Cube(fill_opacity=0).set_stroke(color=WHITE, width=2)]
-
         # Use the initial shapes before the beat drops
         shape_factories = initial_shape_factories
         elapsed_time = 0
@@ -46,11 +43,11 @@ class Create3DCubeWithoutEquations(ThreeDScene):
 
             if not beat_dropped and loudness[i] > 0.8:  # Adjust the threshold as needed to detect the beat drop
                 beat_dropped = True
-                # Switch to including the cube in the shape cycle after the beat drops
-                shape_factories = all_shape_factories
+                next_shape = Cube(fill_opacity=0).set_stroke(color=WHITE, width=2)
+            else:
+                next_shape_index = i % len(shape_factories)
+                next_shape = shape_factories[next_shape_index]()
 
-            next_shape_index = (i if not beat_dropped else i - 1) % len(shape_factories)
-            next_shape = shape_factories[next_shape_index]()
             scaling_factor = 0.5 + loudness[i] * 3
             next_shape.scale(scaling_factor)
 
