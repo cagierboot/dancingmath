@@ -12,56 +12,52 @@ S = np.abs(librosa.stft(y))
 loudness = librosa.amplitude_to_db(S, ref=np.max)
 
 # Get the loudness at each beat by converting beat times to indices on the time axis
-time_index = (beat_times * sr / 512).astype(int)  # Adjust denominator to your STFT hop length
-loudness_beat = loudness[:, time_index].mean(axis=0)  # Take mean loudness if multiple frequencies per time index
+time_index = (beat_times * sr / 512).astype(int)
+loudness_beat = loudness[:, time_index].mean(axis=0)
 
 # Normalize the loudness values to a scale from 0 to 1 for scaling shapes
 loudness = (loudness_beat - np.min(loudness_beat)) / (np.max(loudness_beat) - np.min(loudness_beat))
 
-class CreateMore3DShapes(ThreeDScene):
+class Create3DCubeWithoutEquations(ThreeDScene):
     def construct(self):
-        # Getting the total number of beats
         total_beats = len(beat_times)
         if total_beats == 0:
             raise Exception("No beats found in the audio file.")
 
-        # Create a list of shape factories to create new objects each time
+        # Modified: Added a new shape factory for when the beat drops
         shape_factories = [
             lambda: Line(start=[-1,0,0], end=[1,0,0], color=WHITE),
             lambda: Square(color=WHITE),
             lambda: Cube(fill_opacity=0).set_stroke(color=WHITE, width=2),
-            lambda: Sphere(radius=1, resolution=(30, 40), fill_opacity=0).set_stroke(color=WHITE, width=2),
-            lambda: Cylinder(radius=1, height=2, resolution=(30, 40), fill_opacity=0).set_stroke(color=WHITE, width=2),
-            lambda: Prism(dimensions=[2,2,2], fill_opacity=0).set_stroke(color=WHITE, width=2)
+            lambda: Circle(color=RED)  # New shape for beat drop
         ]
 
-        elapsed_time = 0  # Set the initial elapsed time to 0
-
-        # Initialize the first shape without playing it immediately
+        elapsed_time = 0
         shape = shape_factories[0]()
 
-        # Loop through the beats to animate the transformations
+        # Added: Store the previous loudness to detect the beat drop
+        prev_loudness = loudness[0] if total_beats > 1 else 0
+
         for i in range(total_beats):
-            # Calculate the time duration until the next beat
             duration = beat_times[i] - elapsed_time if i != 0 else 0.1
 
-            # Create new shapes for each transformation
-            next_shape = shape_factories[i % len(shape_factories)]()
+            # Modified: Check if the loudness drops significantly, trigger the new shape
+            if loudness[i] < prev_loudness - 0.1:  # Adjust the threshold as needed
+                next_shape = shape_factories[-1]()  # Select the last shape in the list for beat drop
+            else:
+                next_shape = shape_factories[i % (len(shape_factories) - 1)]()  # Otherwise, cycle through the original shapes
 
-            # Scale the shape according to the loudness
-            scaling_factor = 0.5 + loudness[i] * 3  # Adjust the multiplier to make the effect more or less dramatic
+            scaling_factor = 0.5 + loudness[i] * 3
             next_shape.scale(scaling_factor)
 
-            # Animate the transformation
             self.play(
                 ReplacementTransform(shape, next_shape),
-                run_time=duration  # Sync with the beat
+                run_time=duration
             )
 
-            # Set the current shape to the new one for the next loop iteration
             shape = next_shape
-            elapsed_time += duration  # Update the elapsed time
+            elapsed_time += duration
+            prev_loudness = loudness[i]  # Update the previous loudness for the next iteration
 
-# Example usage:
-scene = CreateMore3DShapes()
+scene = Create3DCubeWithoutEquations()
 scene.render()
