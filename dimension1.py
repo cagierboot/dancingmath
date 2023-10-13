@@ -39,12 +39,11 @@ class CreateCubeAtBeatDrop(ThreeDScene):
             lambda: Polygon(*pentagon_points(radius=1), color=WHITE),
             lambda: Circle(color=WHITE),
             lambda: Square(color=WHITE),
-            
-              
         ]
 
         # Use the initial shapes before the beat drops
-        shape_factories = initial_shape_factories.copy()  # Added copy here to avoid modifying the original list
+        shape_factories = initial_shape_factories.copy()
+
         elapsed_time = 0
         shape = shape_factories[0]()
 
@@ -53,11 +52,13 @@ class CreateCubeAtBeatDrop(ThreeDScene):
         for i in range(total_beats):
             duration = beat_times[i] - elapsed_time if i != 0 else 0.1
 
-            if not beat_dropped and loudness[i] > 0.8:  # Adjust the threshold as needed to detect the beat drop
+            if not beat_dropped and loudness[i] > 0.8:
                 beat_dropped = True
-                # Make the next shape a cube specifically at the beat drop
                 next_shape = Cube(fill_opacity=0).set_stroke(color=WHITE, width=2)
-                shape_factories.append(lambda: Cube(fill_opacity=0).set_stroke(color=WHITE, width=2))  # Add the cube to the list of shape factories
+                shape_factories.append(lambda: Cube(fill_opacity=0).set_stroke(color=WHITE, width=2))
+                
+                # Here, we add the sphere to the shape factories after the cube
+                shape_factories.append(lambda: Sphere(fill_opacity=0).set_stroke(color=WHITE, width=2))  # Added this line
             else:
                 next_shape_index = i % len(shape_factories)
                 next_shape = shape_factories[next_shape_index]()
@@ -72,7 +73,6 @@ class CreateCubeAtBeatDrop(ThreeDScene):
 
             shape = next_shape
             elapsed_time += duration
-
 
 scene = CreateCubeAtBeatDrop()
 scene.render()
