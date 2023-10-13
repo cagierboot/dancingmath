@@ -1,5 +1,6 @@
 import librosa
 import numpy as np
+import random
 from manim import *
 
 # Function to generate the vertices of a pentagon
@@ -34,7 +35,7 @@ class CreateCubeAtBeatDrop(ThreeDScene):
 
         # Initial shape factories before the beat drops
         initial_shape_factories = [
-            lambda: Line(start=[-1,0,0], end=[1,0,0], color=WHITE),
+            lambda: Line(start=[-1, 0, 0], end=[1, 0, 0], color=WHITE),
             lambda: Triangle(color=WHITE),
             lambda: Polygon(*pentagon_points(radius=1), color=WHITE),
             lambda: Circle(color=WHITE),
@@ -56,9 +57,17 @@ class CreateCubeAtBeatDrop(ThreeDScene):
                 beat_dropped = True
                 next_shape = Cube(fill_opacity=0).set_stroke(color=WHITE, width=2)
                 shape_factories.append(lambda: Cube(fill_opacity=0).set_stroke(color=WHITE, width=2))
-                
-                # Here, we add the sphere to the shape factories after the cube
-                shape_factories.append(lambda: Sphere(fill_opacity=0).set_stroke(color=WHITE, width=2))  # Added this line
+
+                shape_factories.append(lambda: Sphere(fill_opacity=0).set_stroke(color=WHITE, width=2))
+
+                shape_factories.append(
+                    lambda: Cone(fill_opacity=0).set_stroke(color=WHITE, width=2).scale(np.array([1, 2, 1]))
+                )
+                shape_factories.append(lambda: Prism(dimensions=[2, 2, 2], fill_opacity=0).set_stroke(color=WHITE, width=2))
+
+                # Shuffle the shapes after the beat drops
+                random.shuffle(shape_factories)
+
             else:
                 next_shape_index = i % len(shape_factories)
                 next_shape = shape_factories[next_shape_index]()
