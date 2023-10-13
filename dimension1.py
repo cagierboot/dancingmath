@@ -24,29 +24,33 @@ class Create3DCubeWithoutEquations(ThreeDScene):
         if total_beats == 0:
             raise Exception("No beats found in the audio file.")
 
-        # Modified: Added a new shape factory for when the beat drops
-        shape_factories = [
+        # Initial shape factories before the beat drops
+        initial_shape_factories = [
             lambda: Line(start=[-1,0,0], end=[1,0,0], color=WHITE),
-            lambda: Square(color=WHITE),
-            lambda: Cube(fill_opacity=0).set_stroke(color=WHITE, width=2),
-            lambda: Circle(color=RED)  # New shape for beat drop
+            lambda: Circle(color=WHITE),
+            lambda: Square(color=WHITE)
         ]
 
+        # All shape factories including the cube after the beat drops
+        all_shape_factories = initial_shape_factories + [lambda: Cube(fill_opacity=0).set_stroke(color=WHITE, width=2)]
+
+        # Use the initial shapes before the beat drops
+        shape_factories = initial_shape_factories
         elapsed_time = 0
         shape = shape_factories[0]()
 
-        # Added: Store the previous loudness to detect the beat drop
-        prev_loudness = loudness[0] if total_beats > 1 else 0
+        beat_dropped = False
 
         for i in range(total_beats):
             duration = beat_times[i] - elapsed_time if i != 0 else 0.1
 
-            # Modified: Check if the loudness drops significantly, trigger the new shape
-            if loudness[i] < prev_loudness - 0.1:  # Adjust the threshold as needed
-                next_shape = shape_factories[-1]()  # Select the last shape in the list for beat drop
-            else:
-                next_shape = shape_factories[i % (len(shape_factories) - 1)]()  # Otherwise, cycle through the original shapes
+            if not beat_dropped and loudness[i] > 0.8:  # Adjust the threshold as needed to detect the beat drop
+                beat_dropped = True
+                # Switch to including the cube in the shape cycle after the beat drops
+                shape_factories = all_shape_factories
 
+            next_shape_index = (i if not beat_dropped else i - 1) % len(shape_factories)
+            next_shape = shape_factories[next_shape_index]()
             scaling_factor = 0.5 + loudness[i] * 3
             next_shape.scale(scaling_factor)
 
@@ -57,7 +61,6 @@ class Create3DCubeWithoutEquations(ThreeDScene):
 
             shape = next_shape
             elapsed_time += duration
-            prev_loudness = loudness[i]  # Update the previous loudness for the next iteration
 
 scene = Create3DCubeWithoutEquations()
 scene.render()
