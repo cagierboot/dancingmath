@@ -61,7 +61,8 @@ class CreateCubeAtBeatDrop(ThreeDScene):
                 shape_factories.append(lambda: Sphere(fill_opacity=0).set_stroke(color=WHITE, width=2))
 
                 shape_factories.append(
-                    lambda: Cone(fill_opacity=0).set_stroke(color=WHITE, width=2).scale(np.array([1, 2, 1]))
+                    lambda: Cone(fill_opacity=0).set_stroke(color=WHITE, width=2).scale(np.array([1, 3, 1]))
+
                 )
                 shape_factories.append(lambda: Prism(dimensions=[2, 2, 2], fill_opacity=0).set_stroke(color=WHITE, width=2))
 
@@ -81,7 +82,9 @@ class CreateCubeAtBeatDrop(ThreeDScene):
             )
 
             # Adding rotation with add_updater
-            next_shape.add_updater(lambda m, dt: m.rotate(0.1, axis=OUT))
+            next_shape.add_updater(lambda m, dt: m.rotate(0.05, axis=UP))
+
+
 
             shape = next_shape
             elapsed_time += duration
