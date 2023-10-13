@@ -2,12 +2,12 @@ import librosa
 import numpy as np
 from manim import *
 
-# Function to generate the vertices of a hexagon
-def hexagon_points(radius=1):
-    """Return the vertices of a regular hexagon with the given radius."""
+# Function to generate the vertices of a pentagon
+def pentagon_points(radius=1):
+    """Return the vertices of a regular pentagon with the given radius."""
     return [
-        np.array([np.cos(np.pi / 3 * i) * radius, np.sin(np.pi / 3 * i) * radius, 0])
-        for i in range(6)
+        np.array([np.cos(np.pi / 2.5 * i) * radius, np.sin(np.pi / 2.5 * i) * radius, 0])
+        for i in range(5)
     ]
 
 # Load the song and get the beat timings
@@ -35,14 +35,16 @@ class CreateCubeAtBeatDrop(ThreeDScene):
         # Initial shape factories before the beat drops
         initial_shape_factories = [
             lambda: Line(start=[-1,0,0], end=[1,0,0], color=WHITE),
+            lambda: Triangle(color=WHITE),
+            lambda: Polygon(*pentagon_points(radius=1), color=WHITE),
             lambda: Circle(color=WHITE),
             lambda: Square(color=WHITE),
-            lambda: Triangle(color=WHITE),
-            lambda: Polygon(*hexagon_points(radius=1), color=WHITE)  # Adjust the radius as needed
+            
+              
         ]
 
         # Use the initial shapes before the beat drops
-        shape_factories = initial_shape_factories
+        shape_factories = initial_shape_factories.copy()  # Added copy here to avoid modifying the original list
         elapsed_time = 0
         shape = shape_factories[0]()
 
@@ -55,6 +57,7 @@ class CreateCubeAtBeatDrop(ThreeDScene):
                 beat_dropped = True
                 # Make the next shape a cube specifically at the beat drop
                 next_shape = Cube(fill_opacity=0).set_stroke(color=WHITE, width=2)
+                shape_factories.append(lambda: Cube(fill_opacity=0).set_stroke(color=WHITE, width=2))  # Add the cube to the list of shape factories
             else:
                 next_shape_index = i % len(shape_factories)
                 next_shape = shape_factories[next_shape_index]()
@@ -69,6 +72,7 @@ class CreateCubeAtBeatDrop(ThreeDScene):
 
             shape = next_shape
             elapsed_time += duration
+
 
 scene = CreateCubeAtBeatDrop()
 scene.render()
