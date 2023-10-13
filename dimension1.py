@@ -80,8 +80,15 @@ class CreateCubeAtBeatDrop(ThreeDScene):
                 run_time=duration
             )
 
+            # Adding rotation with add_updater
+            next_shape.add_updater(lambda m, dt: m.rotate(0.1, axis=OUT))
+
             shape = next_shape
             elapsed_time += duration
+            
+        # To remove updater when animation is done to prevent continuation of rotation after scene end
+        shape.clear_updaters()
 
 scene = CreateCubeAtBeatDrop()
 scene.render()
+
