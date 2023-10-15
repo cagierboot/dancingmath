@@ -3,6 +3,11 @@ import numpy as np
 import random
 from manim import *
 
+config.pixel_height = 1920
+config.pixel_width = 1080
+config.frame_height = 8.0
+config.frame_width = config.frame_height * config.pixel_width / config.pixel_height
+
 # Function to generate the vertices of a pentagon
 def pentagon_points(radius=1):
     """Return the vertices of a regular pentagon with the given radius."""
@@ -57,23 +62,21 @@ class CreateCubeAtBeatDrop(ThreeDScene):
                 beat_dropped = True
                 next_shape = Cube(fill_opacity=0).set_stroke(color=WHITE, width=2)
                 shape_factories.append(lambda: Cube(fill_opacity=0).set_stroke(color=WHITE, width=2))
-
                 shape_factories.append(lambda: Sphere(fill_opacity=0).set_stroke(color=WHITE, width=2))
-
                 shape_factories.append(
-                    lambda: Cone(fill_opacity=0).set_stroke(color=WHITE, width=2).scale(np.array([1, 3, 1]))
+                    lambda: Cone(fill_opacity=0).set_stroke(color=WHITE, width=2).scale(np.array([1, 3.5, 1]))
+
 
                 )
                 shape_factories.append(lambda: Prism(dimensions=[2, 2, 2], fill_opacity=0).set_stroke(color=WHITE, width=2))
-
-                # Shuffle the shapes after the beat drops
                 random.shuffle(shape_factories)
-
             else:
                 next_shape_index = i % len(shape_factories)
                 next_shape = shape_factories[next_shape_index]()
 
-            scaling_factor = 0.5 + loudness[i] * 3
+            max_scaling_factor = 1.5  # Further reduced to keep shapes within frame
+            scaling_factor = 0.5 + loudness[i] * 2  # Adjusted scaling factor calculation
+            scaling_factor = min(scaling_factor, max_scaling_factor)
             next_shape.scale(scaling_factor)
 
             self.play(
@@ -84,14 +87,11 @@ class CreateCubeAtBeatDrop(ThreeDScene):
             # Adding rotation with add_updater
             next_shape.add_updater(lambda m, dt: m.rotate(0.05, axis=UP))
 
-
-
             shape = next_shape
             elapsed_time += duration
             
-        # To remove updater when animation is done to prevent continuation of rotation after scene end
+        # Remove updater when animation is done to prevent continuation of rotation after scene end
         shape.clear_updaters()
 
 scene = CreateCubeAtBeatDrop()
 scene.render()
-
