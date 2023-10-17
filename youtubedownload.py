@@ -2,7 +2,7 @@ from pytube import YouTube
 from http.client import IncompleteRead
 
 max_retries = 5  # Adjust the number of retries as needed
-url = 'https://youtu.be/JTEHO1W7Z2k?si=fFSc7mQgXvnQsTB3'
+url = 'https://youtu.be/vvsF2nF3rTo?si=LC31cKwQ3KhCmpXZ'
 
 for i in range(max_retries):
     try:
