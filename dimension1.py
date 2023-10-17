@@ -34,42 +34,43 @@ class CreateShapesToBeat(ThreeDScene):
 
         # All available shape factories
         shape_factories = [
+            
+            lambda: Cube(fill_opacity=0).set_stroke(color=WHITE, width=2),
+            lambda: Circle(color=WHITE),
+            lambda: Sphere(fill_opacity=0).set_stroke(color=WHITE, width=2),
             lambda: Line(start=[-1, 0, 0], end=[1, 0, 0], color=WHITE),
             lambda: Triangle(color=WHITE),
-            lambda: Circle(color=WHITE),
             lambda: Square(color=WHITE),
             lambda: Polygon(*regular_polygon_points(6, radius=1), color=WHITE),  # Hexagon
             lambda: Ellipse(width=2, height=1, color=WHITE),
-            lambda: Cube(fill_opacity=0).set_stroke(color=WHITE, width=2),
-            lambda: Sphere(fill_opacity=0).set_stroke(color=WHITE, width=2),
-            lambda: Cone(fill_opacity=0).set_stroke(color=WHITE, width=2).scale(np.array([1, 3, 1])),
             lambda: Prism(dimensions=[2, 2, 2], fill_opacity=0).set_stroke(color=WHITE, width=2)
         ]
 
-        random.shuffle(shape_factories)
-
+        # Force the first 4 shapes and then begin the random generations
         elapsed_time = 0
-        shape = shape_factories[0]()
+        shape = None
 
         for i in range(total_beats):
-            random.shuffle(shape_factories)  # Randomize the order of shapes on each iteration
-
-            duration = beat_times[i] - elapsed_time if i != 0 else 0.1
-            next_shape_index = i % len(shape_factories)
-            next_shape = shape_factories[next_shape_index]()
+            if i < 2:
+                next_shape = shape_factories[i]()
+            else:
+                random.shuffle(shape_factories[4:])  # Randomize the order of shapes on each iteration
+                next_shape_index = i % len(shape_factories[2:]) + 2
+                next_shape = shape_factories[next_shape_index]()
 
             # Scaling the shape according to the loudness
             scaling_factor = 0.5 + loudness[i] * 3  # You can adjust the base size and multiplier as needed
             next_shape.scale(scaling_factor)
 
-            self.play(
-                ReplacementTransform(shape, next_shape),
-                run_time=duration
-            )
+            if shape:
+                self.play(
+                    ReplacementTransform(shape, next_shape),
+                    run_time=beat_times[i] - elapsed_time if i != 0 else 0.1
+                )
 
             next_shape.add_updater(lambda m, dt: m.rotate(0.05, axis=UP))
             shape = next_shape
-            elapsed_time += duration
+            elapsed_time = beat_times[i] if i != 0 else 0.1
 
         shape.clear_updaters()
 
