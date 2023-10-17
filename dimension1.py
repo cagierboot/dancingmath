@@ -32,6 +32,13 @@ class CreateShapesToBeat(ThreeDScene):
         if total_beats == 0:
             raise Exception("No beats found in the audio file.")
 
+
+class CreateShapesToBeat(ThreeDScene):
+    def construct(self):
+        total_beats = len(beat_times)
+        if total_beats == 0:
+            raise Exception("No beats found in the audio file.")
+
         # All available shape factories with their respective equations
         shape_factories = [
     (lambda: Cube(fill_opacity=0).set_stroke(color=WHITE, width=2), r"$x^2+y^2+z^2=r^2$"),
@@ -68,6 +75,11 @@ class CreateShapesToBeat(ThreeDScene):
             next_shape.scale(scaling_factor)
             next_equation.scale(scaling_factor)
 
+            # Update the position of the equation based on the boundaries of the shape
+            shape_bottom = next_shape.get_critical_point(DOWN)[1]
+            equation_top = next_equation.get_critical_point(UP)[1]
+            next_equation.next_to(next_shape, DOWN, buff=(equation_top - shape_bottom) * .6)
+            
             if shape and equation:
                 self.play(
                     ReplacementTransform(shape, next_shape),
@@ -85,5 +97,18 @@ class CreateShapesToBeat(ThreeDScene):
 
         shape.clear_updaters()
 
+class PortraitConfig:
+    def __init__(self):
+        config.pixel_height = 1920
+        config.pixel_width = 1080
+        config.frame_height = 8.0
+        config.frame_width = config.frame_height * (config.pixel_width / config.pixel_height)
+
+# Create an instance of the configuration class
+PortraitConfig()
+
+# Create an instance of the scene class with the custom configuration
 scene = CreateShapesToBeat()
+
+# Render the scene
 scene.render()
