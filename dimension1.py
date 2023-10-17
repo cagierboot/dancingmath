@@ -41,7 +41,8 @@ class CreateShapesToBeat(ThreeDScene):
 
         # All available shape factories with their respective equations
         shape_factories = [
-    (lambda: Cube(fill_opacity=0).set_stroke(color=WHITE, width=2), r"$x^2+y^2+z^2=r^2$"),
+    (lambda: Cube(fill_opacity=0).set_stroke(color=WHITE, width=2), 
+r"$-\frac{s}{2} \leq x \leq \frac{s}{2}$, $-\frac{s}{2} \leq y \leq \frac{s}{2}$, $-\frac{s}{2} \leq z \leq \frac{s}{2}$"),
     (lambda: Circle(color=WHITE), r"$x^2+y^2=r^2$"),
     (lambda: Sphere(fill_opacity=0).set_stroke(color=WHITE, width=2), r"$x^2+y^2+z^2=r^2$"),
     (lambda: Line(start=[-1, 0, 0], end=[1, 0, 0], color=WHITE), r"$y=mx+c$"),
@@ -71,14 +72,27 @@ class CreateShapesToBeat(ThreeDScene):
             next_equation.next_to(next_shape, DOWN)
 
             # Scaling the shape according to the loudness
-            scaling_factor = 0.5 + loudness[i] * 3  # You can adjust the base size and multiplier as needed
+            scaling_factor = 0.5 + loudness[i] * 2.5  # You can adjust the base size and multiplier as needed
             next_shape.scale(scaling_factor)
             next_equation.scale(scaling_factor)
 
             # Update the position of the equation based on the boundaries of the shape
             shape_bottom = next_shape.get_critical_point(DOWN)[1]
             equation_top = next_equation.get_critical_point(UP)[1]
-            next_equation.next_to(next_shape, DOWN, buff=(equation_top - shape_bottom) * .6)
+            next_equation.next_to(next_shape, DOWN, buff=(equation_top - shape_bottom) * .4)
+            
+            # Calculate the combined bounding box of the shape and equation
+            combined = VGroup(next_shape, next_equation)
+            combined_width = combined.get_width()
+            combined_height = combined.get_height()
+            
+            scale_factor = min(config.frame_width / combined_width, config.frame_height / combined_height * .7)
+
+            
+            # If the bounding box is larger than the viewport, scale down both the shape and equation
+            if scale_factor < 1:
+                next_shape.scale(scale_factor)
+                next_equation.scale(scale_factor)
             
             if shape and equation:
                 self.play(
@@ -90,7 +104,7 @@ class CreateShapesToBeat(ThreeDScene):
                self.play(Create(VGroup(next_shape, next_equation)),
                           run_time=beat_times[i] - elapsed_time if i != 0 else 0.1)
 
-            next_shape.add_updater(lambda m, dt: m.rotate(0.05, axis=UP))
+            next_shape.add_updater(lambda m, dt: m.rotate(0.15, axis=UP))
             shape = next_shape
             equation = next_equation
             elapsed_time = beat_times[i] if i != 0 else 0.1
@@ -99,8 +113,8 @@ class CreateShapesToBeat(ThreeDScene):
 
 class PortraitConfig:
     def __init__(self):
-        config.pixel_height = 1920
-        config.pixel_width = 1080
+        config.pixel_height = 2000
+        config.pixel_width = 2000
         config.frame_height = 8.0
         config.frame_width = config.frame_height * (config.pixel_width / config.pixel_height)
 
