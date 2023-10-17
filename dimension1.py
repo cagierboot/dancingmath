@@ -32,9 +32,12 @@ class CreateShapesToBeat(ThreeDScene):
         if total_beats == 0:
             raise Exception("No beats found in the audio file.")
 
+        # Create a white rectangle to cover the entire scene
+        background_rect = Rectangle(height=config.frame_height, width=config.frame_width, fill_color=WHITE, fill_opacity=0)
+        self.add(background_rect)
+
         # All available shape factories
         shape_factories = [
-            
             lambda: Cube(fill_opacity=0).set_stroke(color=WHITE, width=2),
             lambda: Circle(color=WHITE),
             lambda: Sphere(fill_opacity=0).set_stroke(color=WHITE, width=2),
@@ -51,28 +54,34 @@ class CreateShapesToBeat(ThreeDScene):
         shape = None
 
         for i in range(total_beats):
-            if i < 2:
+            if i < 4:
                 next_shape = shape_factories[i]()
             else:
-                random.shuffle(shape_factories[4:])  # Randomize the order of shapes on each iteration
-                next_shape_index = i % len(shape_factories[2:]) + 2
+                random.shuffle(shape_factories[4:])
+                next_shape_index = i % len(shape_factories[4:]) + 4
                 next_shape = shape_factories[next_shape_index]()
 
             # Scaling the shape according to the loudness
-            scaling_factor = 0.5 + loudness[i] * 3  # You can adjust the base size and multiplier as needed
+            scaling_factor = 0.5 + loudness[i] * 3
             next_shape.scale(scaling_factor)
+
+            if shape is not None:
+                shape.clear_updaters()
 
             if shape:
                 self.play(
                     ReplacementTransform(shape, next_shape),
                     run_time=beat_times[i] - elapsed_time if i != 0 else 0.1
                 )
-
+                
+                self.play(background_rect.animate.set_opacity(1), run_time=0.1)
+                self.play(background_rect.animate.set_opacity(0), run_time=0.1)
+            else:
+                self.play(FadeIn(next_shape), run_time=beat_times[i] - elapsed_time if i != 0 else 0.1)
+            
             next_shape.add_updater(lambda m, dt: m.rotate(0.05, axis=UP))
             shape = next_shape
             elapsed_time = beat_times[i] if i != 0 else 0.1
-
-        shape.clear_updaters()
 
 scene = CreateShapesToBeat()
 scene.render()
