@@ -42,16 +42,20 @@ class CreateShapesToBeat(ThreeDScene):
         # All available shape factories with their respective equations
         shape_factories = [
     (lambda: Cube(fill_opacity=0).set_stroke(color=WHITE, width=2), 
-r"$-\frac{s}{2} \leq x \leq \frac{s}{2}$, $-\frac{s}{2} \leq y \leq \frac{s}{2}$, $-\frac{s}{2} \leq z \leq \frac{s}{2}$"),
-    (lambda: Circle(color=WHITE), r"$x^2+y^2=r^2$"),
+    r"$-\frac{s}{2} \leq x \leq \frac{s}{2}$, $-\frac{s}{2} \leq y \leq \frac{s}{2}$, $-\frac{s}{2} \leq z \leq \frac{s}{2}$"),
+    
+    (lambda: Circle(color=WHITE), r"$(x - h)^2 + (y - k)^2 = r^2$"),  # Added a comma at the end here
+
     (lambda: Sphere(fill_opacity=0).set_stroke(color=WHITE, width=2), r"$x^2+y^2+z^2=r^2$"),
     (lambda: Line(start=[-1, 0, 0], end=[1, 0, 0], color=WHITE), r"$y=mx+c$"),
     (lambda: Triangle(color=WHITE), r"$A=\frac{1}{2}bh$"),
     (lambda: Square(color=WHITE), r"$A=s^2$"),
     (lambda: Polygon(*regular_polygon_points(6, radius=1), color=WHITE), r"$A=\frac{3\sqrt{3}}{2}s^2$"),
     (lambda: Ellipse(width=2, height=1, color=WHITE), r"$\frac{x^2}{a^2}+\frac{y^2}{b^2}=1$"),
-    (lambda: Prism(dimensions=[2, 2, 2], fill_opacity=0).set_stroke(color=WHITE, width=2), r"$V=Bh$")
+    (lambda: Prism(dimensions=[2, 2, 2], fill_opacity=0).set_stroke(color=WHITE, width=2), r"$V=Bh$"),
+    (lambda: Polygon(*regular_polygon_points(8, radius=1), color=WHITE), r"$A=2s^2(1+\sqrt{2})$")
 ]
+
 
         # Force the first 4 shapes and then begin the random generations
         elapsed_time = 0
@@ -76,10 +80,10 @@ r"$-\frac{s}{2} \leq x \leq \frac{s}{2}$, $-\frac{s}{2} \leq y \leq \frac{s}{2}$
             next_shape.scale(scaling_factor)
             next_equation.scale(scaling_factor)
 
-            # Update the position of the equation based on the boundaries of the shape
+           # Update the position of the equation based on the boundaries of the shape
             shape_bottom = next_shape.get_critical_point(DOWN)[1]
             equation_top = next_equation.get_critical_point(UP)[1]
-            next_equation.next_to(next_shape, DOWN, buff=(equation_top - shape_bottom) * .4)
+            next_equation.next_to(next_shape, DOWN, buff=(equation_top - shape_bottom) * .2)
             
             # Calculate the combined bounding box of the shape and equation
             combined = VGroup(next_shape, next_equation)
@@ -87,7 +91,6 @@ r"$-\frac{s}{2} \leq x \leq \frac{s}{2}$, $-\frac{s}{2} \leq y \leq \frac{s}{2}$
             combined_height = combined.get_height()
             
             scale_factor = min(config.frame_width / combined_width, config.frame_height / combined_height * .7)
-
             
             # If the bounding box is larger than the viewport, scale down both the shape and equation
             if scale_factor < 1:
@@ -104,7 +107,7 @@ r"$-\frac{s}{2} \leq x \leq \frac{s}{2}$, $-\frac{s}{2} \leq y \leq \frac{s}{2}$
                self.play(Create(VGroup(next_shape, next_equation)),
                           run_time=beat_times[i] - elapsed_time if i != 0 else 0.1)
 
-            next_shape.add_updater(lambda m, dt: m.rotate(0.15, axis=UP))
+            next_shape.add_updater(lambda m, dt: m.rotate(0.2, axis=UP))
             shape = next_shape
             equation = next_equation
             elapsed_time = beat_times[i] if i != 0 else 0.1
@@ -113,8 +116,8 @@ r"$-\frac{s}{2} \leq x \leq \frac{s}{2}$, $-\frac{s}{2} \leq y \leq \frac{s}{2}$
 
 class PortraitConfig:
     def __init__(self):
-        config.pixel_height = 2000
-        config.pixel_width = 2000
+        config.pixel_height = 3000
+        config.pixel_width = 2050
         config.frame_height = 8.0
         config.frame_width = config.frame_height * (config.pixel_width / config.pixel_height)
 
