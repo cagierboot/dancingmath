@@ -132,33 +132,6 @@
     </style>
 
 </head>
-    
-    <script>
-       window.onload = async () => {
-            console.log('Hello');
-            console.log('JavaScript Loaded');
-            try {
-                const response = await fetch('http://localhost:5000/');
-
-                if (!response.ok) { 
-                    throw Error(response.statusText);
-                }
-                const data = await response.text();
-
-                const h1 = document.createElement('h1');
-                h1.innerText = data;
-                document.body.appendChild(h1);
-
-                // Removed video related code here
-            } catch (error) {
-                console.log('There was a problem with the fetch operation: ', error);
-            }
-        };
-    </script>
-    <script>
-        console.log('Hello, directly from the HTML');
-    </script>
-</head>
 <body>
     <div id="title">Markeezy Orteezy</div>
     <div class="video-container">
@@ -167,29 +140,83 @@
             Your browser does not support the video tag.
         </video>
     </div>
-    
+
     <div class="upload-container">
         <div class="upload-btn-wrapper">
             <div class="button-container">
                 <div class="notification">1</div>
                 <button class="btn">Upload an Audio File</button>
+                <span id="fileName" style="margin-left: 10px; color: white;"></span>
+                <span id="uploadStatus" style="margin-left: 10px; color: white;"></span> <!-- Added this line -->
             </div>
-            <input type="file" name="myfile" accept="audio/*" />
+            <input type="file" name="myfile" id="audioFileInput" accept="audio/*" />
         </div>
-    
+
         <div class="upload-btn-wrapper" style="margin-left: 40px;">
             <div class="button-container">
                 <div class="notification2">2</div>
-                <button class="btn">Generate</button>
+                <button class="btn" id="generateBtn">Generate</button>
             </div>
         </div>
     </div>
-    
+
     <script type="text/javascript">
+        window.onload = async () => {
+            console.log('JavaScript Loaded');
+
+            const audioFileInput = document.getElementById('audioFileInput');
+            const fileNameElement = document.getElementById('fileName');
+            const uploadStatus = document.getElementById('uploadStatus');  // Added this line
+
+            audioFileInput.addEventListener('change', () => {
+                if (audioFileInput.files.length > 0) {
+                    fileNameElement.textContent = audioFileInput.files[0].name;
+                    uploadStatus.textContent = 'Audio file uploaded successfully!';
+                    uploadStatus.style.color = 'green';  // Added this line
+                } else {
+                    uploadStatus.textContent = 'Failed to upload the audio file.';
+                    uploadStatus.style.color = 'red';  // Added this line
+                }
+            });
+
+            const generateButton = document.getElementById('generateBtn');
+
+            generateButton.addEventListener('click', async () => {
+                try {
+                    const audioFile = audioFileInput.files[0];
+
+                    if (!audioFile) {
+                        console.error('No audio file selected');
+                        return;
+                    }
+
+                    const formData = new FormData();
+                    formData.append('audio', audioFile);
+
+                    const response = await fetch('http://localhost:5000/render_video', {
+                        method: 'POST',
+                        body: formData
+                    });
+
+                    if (!response.ok) {
+                        throw Error(response.statusText);
+                    }
+
+                    const blob = await response.blob();
+                    const url = URL.createObjectURL(blob);
+
+                    const video = document.querySelector('video');
+                    const source = document.querySelector('video source');
+
+                    source.src = url;
+                    video.load();
+                } catch (error) {
+                    console.error('There was a problem with the fetch operation: ', error);
+                }
+            });
+        };
+
         document.getElementById("js-check").style.display = "none";
     </script>
 </body>
-
-
-    
 </html>
